@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prueba de conocimiento — Sesión 4 | RAP 04</title>
+<style>
+:root{--sena:#39A900;--sena-osc:#2D8600;--fondo:#f5f5f5;--texto:#333;--borde:#ddd;--refl:#FF9800}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;color:var(--texto);background:var(--fondo);line-height:1.55;padding:1rem}
+.wrap{max-width:860px;margin:0 auto}
+.barra{position:sticky;top:0;z-index:10;background:#fff;border:1px solid var(--borde);border-radius:8px;padding:.55rem .8rem;margin-bottom:1rem;
+display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.barra button{background:var(--sena);color:#fff;border:0;border-radius:6px;padding:.45rem .9rem;font-size:.85rem;cursor:pointer;font-family:inherit}
+.barra button.sec{background:#eceff1;color:#37474F}
+.barra .reloj{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums;color:#37474F}
+.barra .reloj.fin{color:#c62828}
+.header{background:var(--sena);color:#fff;padding:1.4rem;border-radius:8px;margin-bottom:1rem}
+.header h1{font-size:1.35rem;margin-bottom:.3rem}
+.header .meta{font-size:.88rem;opacity:.93}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.6rem}
+.tag{background:rgba(255,255,255,.22);padding:.2rem .7rem;border-radius:14px;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}
+.card{background:#fff;border:1px solid var(--borde);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem;box-shadow:0 2px 4px rgba(0,0,0,.07)}
+.card h2{font-size:1rem;color:var(--sena-osc);margin-bottom:.6rem}
+.fila{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.7rem}
+.fila .ancho{grid-column:1/-1}
+label.l{display:block;font-size:.78rem;font-weight:600;color:#546E7A;margin-bottom:.15rem}
+input[type=text],input[type=date],textarea{width:100%;padding:.5rem .6rem;border:1px solid #b0bec5;border-radius:6px;font:inherit;font-size:.9rem;background:#fffde7}
+textarea{resize:vertical;min-height:2.6rem}
+input:focus,textarea:focus{outline:2px solid var(--sena);background:#fff}
+.reglas{font-size:.88rem}
+.reglas ul{margin:.3rem 0 0 1.3rem}
+.reglas li{margin:.2rem 0}
+.preg{background:#fff;border:1px solid var(--borde);border-left:4px solid var(--sena);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin-bottom:.9rem;break-inside:avoid;box-shadow:0 2px 4px rgba(0,0,0,.06)}
+.preg .enun{font-weight:600;margin-bottom:.55rem}
+.preg .enun .n{display:inline-block;min-width:1.9rem;height:1.9rem;line-height:1.9rem;text-align:center;background:var(--sena);color:#fff;border-radius:50%;font-size:.82rem;margin-right:.5rem}
+.op{display:flex;gap:.55rem;align-items:flex-start;padding:.45rem .6rem;border:1px solid #e0e0e0;border-radius:6px;margin:.3rem 0;cursor:pointer;font-size:.92rem}
+.op:hover{background:#f1f8e9}
+.op input{margin-top:.3rem;accent-color:var(--sena);width:1.05rem;height:1.05rem;flex:none}
+.op b{color:var(--sena-osc);min-width:1.1rem}
+.op.sel{background:#e8f5e9;border-color:#81C784}
+.cont{font-size:.82rem;color:#78909C}
+.prog{font-size:.85rem;color:#546E7A;margin:.2rem 0 .8rem}
+.inst{background:#fff3e0;border:1px dashed var(--refl);border-radius:8px;padding:.8rem 1rem;margin-top:1.2rem}
+.inst summary{cursor:pointer;font-weight:600;color:#E65100}
+.inst .fila{margin-top:.6rem;align-items:end}
+.res{margin-top:.7rem;font-size:.95rem;font-weight:700}
+.res.si{color:#2E7D32}.res.no{color:#c62828}
+.firma{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:1.4rem}
+.firma div{border-top:1px solid #555;padding-top:.3rem;font-size:.82rem;text-align:center;color:#555}
+footer{text-align:center;color:#777;font-size:.8rem;padding:1.5rem 0;border-top:1px solid var(--borde);margin-top:1.5rem}
+@media(max-width:620px){.firma{grid-template-columns:1fr}}
+@media print{
+body{background:#fff;padding:0;font-size:12px}
+.barra,.inst{display:none}
+.card,.preg{box-shadow:none}
+input[type=text],input[type=date],textarea{background:#fff;border-color:#999}
+.header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.op.sel{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style></head><body><div class="wrap">
+
+<div class="barra" role="toolbar" aria-label="Herramientas">
+<button type="button" id="btnIni">▶ Iniciar cronómetro (45 min)</button>
+<button type="button" id="btnImp" class="sec">🖨 Imprimir / guardar PDF</button>
+<button type="button" id="btnTxt" class="sec">⬇ Descargar respuestas (.txt)</button>
+<button type="button" id="btnBor" class="sec">🗑 Borrar todo</button>
+<span class="reloj" id="reloj" aria-live="off">45:00</span>
+</div>
+
+<div class="header">
+<div class="tags"><span class="tag">RAP 04</span><span class="tag">Sesión 4 de 6</span><span class="tag">Evidencia de conocimiento</span></div>
+<h1>Prueba de conocimiento</h1>
+<div class="meta">Documentar la gestión de la información · Competencia 220501121 · Técnico en Sistemas Teleinformáticos</div>
+</div>
+
+<div class="card">
+<h2>✏️ Datos del aprendiz</h2>
+<div class="fila">
+<div class="ancho"><label class="l" for="d_nombre">Nombre completo del aprendiz</label><input type="text" id="d_nombre" data-k="d_nombre" data-label="Aprendiz" autocomplete="name"></div>
+<div><label class="l" for="d_doc">Documento de identidad</label><input type="text" id="d_doc" data-k="d_doc" data-label="Documento" inputmode="numeric"></div>
+<div><label class="l" for="d_ficha">Ficha</label><input type="text" id="d_ficha" data-k="d_ficha" data-label="Ficha" inputmode="numeric" placeholder="Ej. 3439360"></div>
+<div class="ancho"><label class="l" for="d_tema">Tema evaluado</label>
+<textarea id="d_tema" data-k="d_tema" data-label="Tema evaluado" rows="2">Tipos de documentos técnicos, estándares de documentación y herramientas digitales para elaborar informes</textarea></div>
+<div><label class="l" for="d_fecha">Fecha</label><input type="date" id="d_fecha" data-k="d_fecha" data-label="Fecha"></div>
+<div><label class="l" for="d_inst">Instructor</label><input type="text" id="d_inst" data-k="d_inst" data-label="Instructor" value="Manuel Alejandro Ordóñez Hernández"></div>
+</div>
+</div>
+
+<div class="card reglas">
+<h2>📋 Instrucciones</h2>
+<ul>
+<li>Son <strong>15 preguntas</strong> de selección múltiple con <strong>una sola respuesta correcta</strong>.</li>
+<li>Tiempo: <strong>45 minutos</strong>. Se aprueba con <strong>11 de 15 (70 %)</strong>.</li>
+<li>Se responde <strong>de forma individual, sin apuntes ni internet</strong>.</li>
+<li>Marca la opción que consideres correcta. Puedes cambiarla antes de entregar.</li>
+</ul>
+</div>
+
+<div class="prog" id="prog">Respondidas: 0 de 15</div>
+<div id="preguntas"></div>
+
+<div class="card">
+<h2>Resultado</h2>
+<div class="fila">
+<div><label class="l" for="r_ac">Aciertos (llena el instructor)</label><input type="text" id="r_ac" data-k="r_ac" data-label="Aciertos" inputmode="numeric" placeholder="___ / 15"></div>
+<div><label class="l" for="r_obs">Observaciones</label><input type="text" id="r_obs" data-k="r_obs" data-label="Observaciones"></div>
+</div>
+<div class="firma"><div>Firma del aprendiz</div><div>Firma del instructor</div></div>
+</div>
+
+<details class="inst">
+<summary>Solo instructor: calificar automáticamente</summary>
+<div class="fila">
+<div><label class="l" for="clave">Clave de respuestas (15 letras seguidas)</label><input type="text" id="clave" maxlength="15" autocomplete="off" placeholder="Escribe la clave"></div>
+<div><button type="button" id="btnCal" style="background:var(--sena);color:#fff;border:0;border-radius:6px;padding:.5rem 1rem;cursor:pointer;font:inherit;font-size:.88rem">Calificar</button></div>
+</div>
+<div class="res" id="res" role="status"></div>
+</details>
+
+<footer>SENA · Centro de la Innovación Agroindustrial y de Servicios — Regional Boyacá<br>
+I.E. José Antonio Galán, Puerto Boyacá · RAP 04 · Competencia 220501121<br>
+Instructor: Manuel Alejandro Ordóñez Hernández</footer>
+</div>
+
+<script>
+(function(){
+var P='s04_prueba_rap04_';
+var Q=[
+['¿Qué documento técnico describe, paso a paso, cómo ejecutar una tarea (por ejemplo, la copia de seguridad) para que otra persona pueda repetirla sola?',
+ ['Un acta de reunión','Un procedimiento documentado','Una cotización','Un cronograma de actividades'],1],
+['¿Qué documento deja constancia de lo tratado y de los compromisos acordados en una reunión?',
+ ['Un informe técnico','Una lista de chequeo','Un acta','Un manual de usuario'],2],
+['Un documento formado por ítems que se responden con «sí» o «no», para no omitir pasos durante un mantenimiento preventivo, es:',
+ ['Una lista de chequeo','Una bitácora','Un acta','Un glosario'],0],
+['Cambias la memoria RAM de un equipo de cómputo. ¿Qué documentos debes actualizar?',
+ ['Solo la ficha técnica','Solo la hoja de vida','Ninguno, porque la RAM no se documenta','Ambos: la ficha técnica para que el dato quede correcto hoy y la hoja de vida para registrar que el cambio ocurrió'],3],
+['En un informe técnico, ¿en qué parte se escribe únicamente lo observado y medido, sin opinar?',
+ ['Objetivo','Hallazgos','Conclusiones','Recomendaciones'],1],
+['En un informe técnico, ¿qué parte indica hasta dónde llega el informe y qué cosas no cubre?',
+ ['Alcance','Encabezado','Firma','Recomendaciones'],0],
+['¿Cuál de estas frases cumple la regla de «un hecho por oración» y es medible?',
+ ['El equipo estaba muy lento y con muchos problemas.','Se procedió a realizar la verificación del estado del equipo.','El equipo tardó 4 minutos en llegar al escritorio.','Parece que el disco falla, aunque no se verificó.'],2],
+['¿Cuál de estas afirmaciones es un hallazgo (hecho observado) y no una conclusión?',
+ ['La fuente de poder está dañada por el uso.','El equipo se apagó 3 veces en 20 minutos.','Se recomienda cambiar la fuente de poder.','El técnico cree que el router ya es viejo.'],1],
+['¿Para qué sirve el control de versiones en un documento técnico?',
+ ['Para que el texto se vea más largo y completo','Para proteger el archivo con contraseña','Para evitar que el documento se imprima','Para saber qué cambió, cuándo y quién lo cambió, y cuál es la versión vigente'],3],
+['¿Cuál de estos nombres de archivo sigue una buena regla de nomenclatura (tipo de documento, tema, fecha y versión)?',
+ ['Informe Final Báscula (2).docx','informe_bascula_2026-09-11_v1.docx','FICHA PC BUENA ESTA SI.pdf','bitacora nueva (2) copia.xlsx'],1],
+['¿Qué documento oficial define cómo debe operarse o mantenerse un equipo y sirve como referencia para evaluar la documentación?',
+ ['Una hoja de vida','Una bitácora','Un manual técnico','Un acta de reunión'],2],
+['Tienes datos tabulares que se van a importar a otro sistema o programa. ¿Qué formato de archivo conviene usar?',
+ ['CSV','DOCX','PDF','PNG'],0],
+['Para que varias personas editen el mismo informe y quede el historial de cambios, lo más adecuado es:',
+ ['Enviarse por correo versiones sucesivas del archivo','Usar un documento compartido en la nube con historial de versiones','Imprimirlo y corregirlo a mano','Pasarlo de mano en mano en una memoria USB'],1],
+['¿Por qué conviene guardar el informe final en PDF antes de entregarlo?',
+ ['Porque así se puede editar más fácil','Porque pesa siempre más','Porque obliga a usar fórmulas','Porque conserva el formato y evita cambios accidentales'],3],
+['Si el reporte de un incidente no trae un dato que necesitas para tu informe, lo correcto es:',
+ ['Inventar un valor razonable para completar la tabla','Borrar la sección donde iría ese dato','Escribir «dato no disponible en el reporte» y continuar','Esperar a tener el dato y no entregar el informe'],2]
+];
+var L='ABCD',ok=true;
+function lee(k){try{return localStorage.getItem(P+k);}catch(e){ok=false;return null;}}
+function esc(k,v){try{if(v===null||v===''){localStorage.removeItem(P+k);}else{localStorage.setItem(P+k,v);}}catch(e){ok=false;}}
+var cont=document.getElementById('preguntas'),html='';
+Q.forEach(function(q,i){
+  html+='<div class="preg" id="p'+i+'"><div class="enun"><span class="n">'+(i+1)+'</span>'+q[0]+'</div>';
+  q[1].forEach(function(o,j){
+    html+='<label class="op"><input type="radio" name="q'+i+'" value="'+L[j]+'" data-q="'+i+'"><b>'+L[j]+'.</b><span>'+o+'</span></label>';
+  });
+  html+='</div>';
+});
+cont.innerHTML=html;
+
+function marca(i){
+  var grp=document.querySelectorAll('input[name="q'+i+'"]');
+  [].forEach.call(grp,function(r){r.parentNode.classList.toggle('sel',r.checked);});
+}
+function cuenta(){
+  var n=0;for(var i=0;i<Q.length;i++){if(document.querySelector('input[name="q'+i+'"]:checked'))n++;}
+  document.getElementById('prog').textContent='Respondidas: '+n+' de '+Q.length+(ok?'':'  ·  (este navegador no guarda: usa Imprimir o Descargar)');
+}
+for(var i=0;i<Q.length;i++){
+  var v=lee('q'+i);
+  if(v){var r=document.querySelector('input[name="q'+i+'"][value="'+v+'"]');if(r)r.checked=true;}
+  marca(i);
+}
+cont.addEventListener('change',function(e){
+  var t=e.target;if(!t.getAttribute('data-q'))return;
+  var i=+t.getAttribute('data-q');esc('q'+i,t.value);marca(i);cuenta();
+});
+var campos=[].slice.call(document.querySelectorAll('[data-k]'));
+campos.forEach(function(el){
+  var v=lee(el.getAttribute('data-k'));if(v!==null)el.value=v;
+  el.addEventListener('input',function(){esc(el.getAttribute('data-k'),el.value);});
+});
+var f=document.getElementById('d_fecha');
+if(f&&!f.value){var d=new Date();f.value=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
+cuenta();
+
+/* cronómetro */
+var seg=45*60,tm=null,rel=document.getElementById('reloj');
+function pinta(){var m=Math.floor(seg/60),s=seg%60;rel.textContent=('0'+m).slice(-2)+':'+('0'+s).slice(-2);rel.className='reloj'+(seg<=300?' fin':'');}
+document.getElementById('btnIni').addEventListener('click',function(){
+  if(tm){clearInterval(tm);tm=null;this.textContent='▶ Reanudar cronómetro';return;}
+  this.textContent='⏸ Pausar cronómetro';
+  tm=setInterval(function(){seg--;pinta();if(seg<=0){clearInterval(tm);tm=null;rel.textContent='¡Tiempo!';rel.className='reloj fin';}},1000);
+});
+pinta();
+
+document.getElementById('btnImp').addEventListener('click',function(){window.print();});
+document.getElementById('btnBor').addEventListener('click',function(){
+  if(!window.confirm('¿Borrar todas las respuestas y los datos? No se puede deshacer.'))return;
+  for(var i=0;i<Q.length;i++){var c=document.querySelector('input[name="q'+i+'"]:checked');if(c)c.checked=false;esc('q'+i,'');marca(i);}
+  campos.forEach(function(el){if(el.id!=='d_tema'&&el.id!=='d_inst'&&el.id!=='d_fecha'){el.value='';esc(el.getAttribute('data-k'),'');}});
+  cuenta();
+});
+document.getElementById('btnTxt').addEventListener('click',function(){
+  var g=function(id){return (document.getElementById(id).value||'').trim();};
+  var T=['SENA — RAP 04 — Prueba de conocimiento (Sesión 4)','='.repeat(50),
+   'Aprendiz: '+g('d_nombre'),'Documento: '+g('d_doc'),'Ficha: '+g('d_ficha'),'Fecha: '+g('d_fecha'),
+   'Tema evaluado: '+g('d_tema'),'Instructor: '+g('d_inst'),'',' Respuestas:'];
+  for(var i=0;i<Q.length;i++){var c=document.querySelector('input[name="q'+i+'"]:checked');T.push('  '+('0'+(i+1)).slice(-2)+'. '+(c?c.value:'—'));}
+  var nom=(g('d_nombre')||'aprendiz').replace(/[^\w\-]+/g,'_');
+  var b=new Blob([T.join('\r\n')],{type:'text/plain;charset=utf-8'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Prueba_S04_'+nom+'.txt';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+});
+document.getElementById('btnCal').addEventListener('click',function(){
+  var k=(document.getElementById('clave').value||'').toUpperCase().replace(/[^ABCD]/g,'');
+  var out=document.getElementById('res');
+  if(k.length!==Q.length){out.className='res no';out.textContent='La clave debe tener '+Q.length+' letras (A, B, C o D). Tiene '+k.length+'.';return;}
+  var n=0,fallas=[];
+  for(var i=0;i<Q.length;i++){var c=document.querySelector('input[name="q'+i+'"]:checked');if(c&&c.value===k[i])n++;else fallas.push(i+1);}
+  var pasa=n>=11;
+  out.className='res '+(pasa?'si':'no');
+  out.textContent=n+' de 15 ('+Math.round(n/15*100)+' %) — '+(pasa?'APRUEBA':'NO APRUEBA')+(fallas.length?'  ·  Falladas o en blanco: '+fallas.join(', '):'');
+  var ac=document.getElementById('r_ac');ac.value=n+' / 15';esc('r_ac',ac.value);
+});
+})();
+</script>
+</body></html>
